@@ -1,0 +1,100 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+		    RDMA CM in OFED 1.5 Release Notes
+			  
+			   December 2009
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. New Features
+3. Known Issues
+4. Fixed bugs since OFED 1.3
+5. Fixed bugs since OFED 1.4.2
+
+===============================================================================
+1. Overview
+===============================================================================
+The RDMA CM is a communication manager used to setup reliable, connected
+and unreliable datagram data transfers.  It provides an RDMA transport
+neutral interface for establishing connections.  The API is based on sockets,
+but adapted for queue pair (QP) based semantics: communication must be
+over a specific RDMA device, and data transfers are message based.
+
+
+The RDMA CM only provides the communication management (connection setup /
+teardown) portion of an RDMA API.  It works in conjunction with the verbs
+API for data transfers.
+
+===============================================================================
+2. New Features
+===============================================================================
+for OFED 1.3:
+Added support for valgrind checks.
+
+Added quality of service support.  Quality of service (QoS) is automatically
+enabled through the use of the kernel rdma_cm, if the local subnet is
+configured for QoS.  Additionally, the librdmacm allows users to request
+a specific type of service to use when connecting through a new API.
+Support for QoS is fabric dependent, and usually configured by an
+administrator.  Details of QoS are outside the scope of this document;
+additional information may be found in subnet management (SM) documentation.
+
+Added sanity checks and fixes for maximum outstanding RDMA operations in an
+effort to detect application errors earlier in the connection process.
+
+Various documentation updates.
+
+for OFED 1.2:
+The RDMA CM now supports connected, datagram, and multicast data transfers.
+
+When used over Infiniband, the RDMA CM will make use of a local path record
+cache, if it is enabled.  On large fabrics, use of the local cache can greatly
+reduce connection time.  Use of a cache is not necessary for iWarp.
+
+Man pages have been created to describe the various interfaces and test
+programs available.  For a full list, users should refer to the rdma_cm.7 man
+page.
+
+===============================================================================
+3. Known Issues
+===============================================================================
+The RDMA CM relies on the operating system's network configuration tables to
+map IP addresses to RDMA devices.  Incorrectly configured network
+configurations can result in the RDMA CM being unable to locate the correct
+RDMA device.  Currently, the RDMA CM only supports IPv4 addressing.
+
+All RDMA interfaces must provide a way to map IP addresses to an RDMA device.
+For Infiniband, this is done using IPoIB, and requires correctly configured
+IPoIB device interfaces sharing the same multicast domain.  For details on
+configuring IPoIB, refer to ipoib_release_notes.txt.  For RDMA devices to
+communicate, they must support the same underlying network and data link
+layers.
+
+If you experience problems using the RDMA CM, you may want to check the
+following:
+
+   * Verify that you have IP connectivity over the RDMA devices.  For example,
+     ping between iWarp or IPoIB devices.
+
+   * Ensure that IP network addresses assigned to RDMA devices do not
+     overlap with IP network addresses assigned to standard Ethernet devices.
+
+   * For multicast issues, either bind directly to a specific RDMA device, or
+     configure the IP routing tables to route multicast traffic over an RDMA
+     device's IP address.
+
+
+===============================================================================
+4. Fixed bugs since OFED 1.3
+===============================================================================
+- The reject status fix has been inserted for DAPL.
+
+===============================================================================
+5. Fixed bugs since OFED 1.4.2
+===============================================================================
+- examples: print errno on failures
+- return errors from the library consistently
+- initialize correct pthread condition
+- fix race initializing library

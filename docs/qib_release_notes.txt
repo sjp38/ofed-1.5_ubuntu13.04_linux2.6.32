@@ -1,0 +1,13 @@
+	      Open Fabrics Enterprise Distribution (OFED)
+		    qib in OFED 1.5 Release Notes
+
+			  December 2009
+
+======================================================================
+1. Overview
+======================================================================
+qib is the low level driver implementation for all QLogic InfiniPath
+PCI-Express HCAs: gen 1 x8 SDR QLE7140, gen 1 x8 DDR QLE7240,
+gen 1 x16 DDR QLE7280, gen 2 x8 QDR QLE7340 and QLE7342.
+
+The qib driver is new for OFED 1.5.

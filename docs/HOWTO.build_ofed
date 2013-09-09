@@ -1,0 +1,67 @@
+             Open Fabrics Enterprise Distribution (OFED)
+                      How To Build OFED 1.5
+
+                          December 2009
+
+
+==============================================================================
+Table of contents
+==============================================================================
+1.  Overview
+2.  Usage
+3.  Requirements
+
+==============================================================================
+1. Overview
+==============================================================================
+The script "build_ofed.sh" is used to build the OFED package based on the
+OpenFabrics project. The package is built under the current working directory.
+
+See OFED_release_notes.txt for more details. 
+
+==============================================================================
+2. Usage
+==============================================================================
+
+The build script for the OFED package can be downloaded from: 
+  git://git.openfabrics.org/~vlad/ofabuild
+  branch: ofed_1_5
+
+Name: build_ofed.sh
+
+        Usage: build_ofed.sh --ver|-v <OFED version>
+                     [--tmpdir <tmpdir to use as a work area>]
+                     [--ofed-scripts <path to ofed scripts directory>]
+                     [--ofed-docs <path to ofed docs directory>]
+                     [--mpidir|-m <path to mpi directory>]
+                     [--long-help]
+
+Example:
+
+    ./build_ofed.sh --ver 1.5-rc7
+
+    This command will create a package (i.e., subtree) called OFED-1.5-rc7
+    in the current working directory.
+
+==============================================================================
+3. Requirements
+==============================================================================
+
+1. Git:
+    Can be downloaded from:
+        http://www.kernel.org/pub/software/scm/git
+
+2. Autotools:
+
+      libtool-1.5.20 or higher
+      autoconf-2.59 or higher
+      automake-1.9.6 or higher
+      m4-1.4.4 or higher
+
+      The above tools can be downloaded from the following URLs:
+           
+         libtool - "http://ftp.gnu.org/gnu/libtool/libtool-1.5.20.tar.gz"
+         autoconf - "http://ftp.gnu.org/gnu/autoconf/autoconf-2.59.tar.gz"
+         automake - "http://ftp.gnu.org/gnu/automake/automake-1.9.6.tar.gz"
+         m4 - "http://ftp.gnu.org/gnu/m4/m4-1.4.4.tar.gz"
+

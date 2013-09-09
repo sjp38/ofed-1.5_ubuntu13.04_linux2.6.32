@@ -1,0 +1,117 @@
+             Open Fabrics Enterprise Distribution (OFED)
+                    SDP in OFED 1.5 Release Notes
+
+                          December 2009
+
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Bug Fixes and Enhancements since OFED 1.4.2
+3. Known Issues
+4. Verification Applications/Flows/Tests
+
+===============================================================================
+1. Overview
+===============================================================================
+SDP in OFED is at GA level for OFED 1.5
+
+
+===============================================================================
+2. Bug Fixes and Enhancements since OFED 1.4.2
+===============================================================================
+* Cleanup
+    - New kernel support
+    - Extensive ovehaul on BCopy code
+    - SDP spec compliance improved
+
+* New function
+    - ZCopy combined mode support
+    - RX processing from interrupt context
+    - HW interrupt moderation
+    - No TX interrupts
+    - /proc/net/sdpstats for sdp statistics
+    - /proc/net/sdpprf for performance debugging
+    - debug prints for SDP packets
+
+* Bug fixes
+    - No known kernel crash is caused by SDP.
+    - Many small bugs fixed - see bugzilla.
+
+
+===============================================================================
+3. Known Issues
+===============================================================================
+- BUG1444 - setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
+  system wide sdp memory usage for recv use module parameter top_mem_usage.
+
+- There are some issues regarding PPC and IA64 that were not fixed for this
+  release. check bugzilla for more info.
+
+- TCP allows connecting to IP_ANY - 0.0.0.0 (as a destination address!). SDP 
+  does not allow - and will reject the connection.
+
+- Each SDP socket currently consumes up to 2 MBytes of memory. If this value
+  is high for your installation, it is possible to trade off performance
+  for lower memory utilization per socket by reducing the value of the
+  "rcvbuf_scale" module parameter (default: 16).
+
+  Note: the minimum legal value for this parameter is 1.
+  At this parameter value, each socket will consume approximately 128 KBytes.
+
+- Small message size performance is low when messages are sent by client
+  at a rate lower than the rate at which they are consumed by server,
+  and when TCP_CORK is not set. This is observed, for example, with iperf
+  benchmark. As a workaround, set the TCP_CORK socket option
+  to ensure data is sent in at least 32K byte chunks.
+
+- Performance is low on 32-bit kernels, as SDP utilizes high memory
+  to ease memory pressure. Moving to a 64-bit kernel solves this
+  problem even if the application remains a 32-bit one.
+
+- By default, SDP utilizes a 2 Kbyte MTU size.  This may cause PCI-X cards
+  using Mellanox Technologies "Infinihost" HCAs to experience low bandwidth.
+  Workaround:  reset the MTU size to 1K in this situation, using either of
+  the two methods below:
+
+  1. Activate the "tavor quirk" workaround in opensm:
+     a. Create an opensm options cache file (/var/cache/osm/opensm.opts):
+          > opensm --cache-options -o
+     b. Add the following line to /var/cache/osm/opensm.opts:
+          enable_quirks TRUE
+     c. Rerun opensm using your usual command line options to activate
+        the opensm quirk option.
+
+  2. Activate the "tavor quirk" workaround in cma:
+       set the tavor_quirk module parameter of the rdma_cm module to value 1
+       (default: 0).
+
+- BZCOPY mode is only effective for large block transfers.
+  By setting the /sys parameter 'sdp_zcopy_thresh' to a non-zero value, a 
+  non-standard SDP speedup is enabled.  All messages longer than 
+  'sdp_zcopy_thresh' bytes in length will cause the user space buffer to
+  be pinned and the data sent directly from the original buffer.  This 
+  results in less CPU use and, on many systems, much better bandwidth.
+  The default 64K value for 'sdp_zcopy_thresh' is sometimes too low for
+  some systems.  You must experiment with your hardware to select the
+  best value. when mixing bzcopy and bcopy on the same socket the socket
+  could get stucked in rare situations - BUG1324.
+
+
+===============================================================================
+4. Verification Applications/Flows/Tests
+===============================================================================
+- ssh/sshd
+- wget/netscape/firefox/apache                  
+- netpipe               
+- netperf             
+- LTP socket tests
+- iperf-2.0.2         
+- ttcp
+- Threaded and forking echo client server examples
+- Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
+- Many UNIX utilities to verify that pre-load did not harm the applications
+
+

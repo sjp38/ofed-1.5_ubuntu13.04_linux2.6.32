@@ -1,0 +1,213 @@
+========================================================================
+
+             Open Fabrics Enterprise Distribution (OFED)
+              MVAPICH2-1.4 in OFED 1.5 Release Notes
+
+                          December 2009
+
+
+Overview
+--------
+
+These are the release notes for MVAPICH2-1.4.  This is OFED's edition of
+the MVAPICH2-1.4 release. MVAPICH2 is an MPI-2 implementation over
+InfiniBand and iWARP from the Ohio State University
+(http://mvapich.cse.ohio-state.edu/).
+
+
+User Guide
+----------
+
+For more information on using MVAPICH2-1.4, please visit the user guide
+at http://mvapich.cse.ohio-state.edu/support/.
+
+
+Software Dependencies
+---------------------
+
+MVAPICH2 depends on the installation of the OFED Distribution stack with
+OpenSM running. The MPI module also requires an established network
+interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR
+support is needed if built with fault tolerance support.
+
+
+New Features
+------------
+
+MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation
+based on MPICH2.  MVAPICH2 1.4 is available as a single integrated
+package (with MPICH2 1.0.8p1).  This version of MVAPICH2-1.4 for OFED
+has the following changes from MVAPICH2-1.2p1:
+
+MVAPICH2-1.4 (10/29/09)
+
+- Enhancements since mvapich2-1.4rc2
+    - Efficient runtime CPU binding
+    - Add an environment variable for controlling the use of multiple
+      cq's for
+      iWARP interface.
+    - Add environmental variables to disable registration cache for
+      All-to-All
+      on large systems.
+    - Performance tune for pt-to-pt Intra-node communication with LiMIC2
+    - Performance tune for MPI_Broadcast
+
+- Bug fixes since mvapich2-1.4rc2
+    - Fix the reading error in lock_get_response by adding
+      initialization to req->mrail.protocol
+    - Fix mpirun_rsh scalability issue with hierarchical ssh scheme
+      when launching greater than 8K processes.
+    - Add mvapich_ prefix to yacc functions. This can avoid some
+      namespace
+      issues when linking with other libraries.  Thanks to Manhui Wang
+       for contributing the patch.
+
+MVAPICH2-1.4-RC2 (08/31/2009)
+
+- Added Feature: Check-point Restart with Fault-Tolerant Backplane
+  Support
+  (FTB_CR)
+
+- Added Feature: Multiple CQ-based design for Chelsio iWARP
+
+- Fix for hang with packetized send using RDMA Fast path
+
+- Fix for allowing to use user specified P_Key's (Thanks to Mike Heinz @
+  QLogic)
+
+- Fix for allowing mpirun_rsh to accept parameters through the
+  parameters file (Thanks to Mike Heinz @ QLogic)
+
+- Distribute LiMIC2-0.5.2 with MVAPICH2. Added flexibility for selecting
+  and using a pre-existing installation of LiMIC2
+
+- Modify the default value of shmem_bcast_leaders to 4K
+
+- Fix for one-sided with XRC support
+
+- Fix hang with XRC
+
+- Fix to always enabling MVAPICH2_Sync_Checkpoint functionality
+
+- Increase the amount of command line that mpirun_rsh can handle (Thanks
+  for the suggestion by Bill Barth @ TACC)
+
+- Fix build error on RHEL 4 systems (Reported by Nathan Baca and
+  Jonathan
+  Atencio)
+
+- Fix issue with PGI compilation for PSM interface
+
+- Fix for one-sided accumulate function with user-defined contiguous
+  datatypes
+
+- Fix linear/hierarchical switching logic and reduce threshold for the
+  enhanced mpirun_rsh framework.
+
+- Clean up intra-node connection management code for iWARP
+
+- Fix --enable-g=all issue with uDAPL interface
+
+- Fix one sided operation with on demand CM.
+
+- Fix VPATH build
+
+MVAPICH2-1.4-RC1 (06/02/2009)
+
+- MPI 2.1 standard compliant
+
+- Based on MPICH2 1.0.8p1
+
+- Dynamic Process Management (DPM) Support with mpirun_rsh and MPD
+   - Available for OpenFabrics (IB) interface
+
+- Support for eXtended Reliable Connection (XRC)
+   - Available for OpenFabrics (IB) interface
+
+- Kernel-level single-copy intra-node communication support based on
+  LiMIC2
+   - Delivers superior intra-node performance for medium and
+     large messages
+   - Available for all interfaces (IB, iWARP and uDAPL)
+
+- Enhancement to mpirun_rsh framework for faster job startup
+  on large clusters
+   - Hierarchical ssh to nodes to speedup job startup
+   - Available for OpenFabrics (IB and iWARP), uDAPL interfaces
+     (including Solaris) and the New QLogic-InfiniPath interface
+
+- Scalable checkpoint-restart with mpirun_rsh framework
+
+- Checkpoint-restart with intra-node shared memory (kernel-level with
+  LiMIC2) support
+   - Available for OpenFabrics (IB) Interface
+
+- K-nomial tree-based solution together with shared memory-based
+  broadcast for scalable MPI_Bcast operation
+   - Available for all interfaces (IB, iWARP and uDAPL)
+
+- Native support for QLogic InfiniPath
+   - Provides support over PSM interface
+
+* Bugs fixed since MVAPICH2-1.2p1
+
+  - Changed parameters for iWARP for increased scalability
+
+  - Fix error with derived datatypes and Put and Accumulate operations
+      Request was being marked complete before data transfer
+      had actually taken place when MV_RNDV_PROTOCOL=R3 was used
+
+  - Unregister stale memory registrations earlier to prevent
+    malloc failures
+
+  - Fix for compilation issues with --enable-g=mem and --enable-g=all
+
+  - Change dapl_prepost_noop_extra value from 5 to 8 to prevent
+    credit flow issues.
+
+  - Re-enable RGET (RDMA Read) functionality
+
+  - Fix SRQ Finalize error
+    Make sure that finalize does not hang when the srq_post_cond is
+    being waited on.
+
+  - Fix a multi-rail one-sided error when multiple QPs are used
+  
+  - PMI Lookup name failure with SLURM
+
+  - Port auto-detection failure when the 1st HCA did 
+    not have an active failure
+
+  - Change default small message scheduling for multirail
+    for higher performance
+ 
+  - MPE support for shared memory collectives now available
+
+
+Main Verification Flows
+-----------------------
+
+In order to verify the correctness of MVAPICH2-1.4, the following tests
+and parameters were run.
+
+Test                            Description
+====================================================================
+Intel                           Intel's MPI functionality test suite
+OSU Benchmarks                  OSU's performance tests
+IMB                             Intel's MPI Benchmark test
+mpich2                          Test suite distributed with MPICH2
+mpitest                         b_eff test
+Linpack                         Linpack benchmark
+NAS                             NAS Parallel Benchmarks (NPB3.2)
+NAMD                            NAMD application
+
+
+Mailing List
+------------
+
+There is a public mailing list mvapich-discuss@cse.ohio-state.edu for
+mvapich users and developers to
+- Ask for help and support from each other and get prompt response
+- Contribute patches and enhancements
+
+========================================================================

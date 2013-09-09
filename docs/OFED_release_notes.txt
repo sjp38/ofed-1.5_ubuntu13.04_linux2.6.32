@@ -1,0 +1,247 @@
+	    Open Fabrics Enterprise Distribution (OFED)
+	              Version 1.5
+	            Release Notes
+	            December 2009
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview, which includes:
+	- OFED Distribution Rev 1.5 Contents
+	- Supported Platforms and Operating Systems
+	- Supported HCA and RNIC Adapter Cards and Firmware Versions
+	- Tested Switch Platforms
+	- Third party Test Packages
+	- OFED sources
+4. Main Changes from OFED 1.4.2
+5. Known Issues
+
+
+===============================================================================
+1. Overview
+===============================================================================
+These are the release notes of OpenFabrics Enterprise Distribution (OFED)
+release 1.5. The OFED software package is composed of several software modules,
+and is intended for use on a computer cluster constructed as an InfiniBand
+subnet or iWARP network. 
+
+Note: If you plan to upgrade the OFED package on your cluster, please upgrade
+all of its nodes to this new version.
+
+
+1.1 OFED 1.5 Contents
+-----------------------
+The OFED package contains the following components:
+ - OpenFabrics core and ULPs:
+	- IB HCA drivers (mthca, mlx4, qib, ehca)
+	- iWARP RNIC driver (cxgb3, nes)
+	- core
+	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
+	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA.
+ - OpenFabrics utilities:
+	- OpenSM (OSM): InfiniBand Subnet Manager
+	- Diagnostic tools
+	- Performance tests
+ - MPI:
+	- OSU MPI stack supporting the InfiniBand and iWARP interface
+	- Open MPI stack supporting the InfiniBand and iWARP interface
+	- OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
+	- MPI benchmark tests (OSU benchmarks, Intel MPI benchmarks, Presta)
+ - Extra packages:
+	- open-iscsi: open-iscsi initiator with iSER support
+	- ib-bonding: Bonding driver for IPoIB interface
+ - Sources of all software modules (under conditions mentioned in the modules'
+   LICENSE files)
+ - Documentation
+
+Notes:
+1. iSER target and NFS-RDMA is of Beta quality.
+2. All other OFED components are of production quality.
+3. See release notes for each package in the docs directory.
+4. Any Topspin copyright belongs to Cisco Systems, Inc.
+
+1.2 Supported Platforms and Operating Systems
+---------------------------------------------
+  o   CPU architectures:
+	- x86_64
+	- x86
+	- ppc64
+	- ia64
+	
+  o   Linux Operating Systems:
+	- RedHat EL4 up7	2.6.9-78.ELsmp 
+	- RedHat EL4 up8	2.6.9-89.ELsmp 
+	- RedHat EL5 up3	2.6.18-128.el5
+	- RedHat EL5 up4	2.6.18-164.el5
+	- SLES10 SP2 		2.6.16.60-0.21-smp  
+	- SLES10 SP3 		2.6.16.60-0.54-smp  
+	- SLES11 		2.6.27.19-5-default
+	- OEL 4 up7		2.6.9-78.ELsmp
+	- OEL 4 up8		2.6.9-89.ELsmp
+	- CentOS5.3     	2.6.18-128.el5
+	- CentOS5.4     	2.6.18-164.el5
+	- Fedora Core12 	2.6.31.5-127.fc12    *
+	- OpenSuSE 11.2		2.6.31.5-0.1-default *
+	- kernel.org		2.6.29, 2.6.30,
+                                2.6.31 and 2.6.32    *
+
+      * Minimal QA for these versions
+	
+1.3 HCAs and RNICs Supported
+----------------------------
+This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
+well as iWARP RNICs by Chelsio Communications and Intel.
+
+  o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
+	- InfiniHost (fw-23108 Rev 3.5.000)
+	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
+	                     with memory: fw-25208 Rev 4.8.200)
+	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
+	- ConnectX IB (fw-25408 Rev 2.7.000)
+
+	For official firmware versions please see:
+	http://www.mellanox.com/content/pages.php?pg=firmware_download
+
+  o   Qlogic HCAs:
+	- QHT7140 QLogic InfiniPath SDR HTX HCA
+	- QLE7140 QLogic InfiniPath SDR PCIe HCA
+	- QLE7240 QLogic InfiniPath DDR x8 PCIe HCA
+	- QLE7280 QLogic IniniPath DDR x16 PCIe HCA
+
+  o   IBM HCAs:
+	- GX Dual-port SDR 4x IB HCA
+	- GX Dual-port SDR 12x IB HCA
+	- GX Dual-port DDR 4x IB HCA
+	- GX Dual-port DDR 12x IB HCA
+
+  o   Chelsio RNICs:
+	- S310/S320 10GbE Storage Accelerators
+	- R310/R320 10GbE iWARP Adapters
+
+  o   Intel RNICs:
+	- NE020 10Gb iWARP Adapter
+
+
+1.4 Switches Supported
+----------------------
+This release was tested with switches and gateways provided by the following
+companies:
+	- Voltaire
+	- Qlogic
+	- Flextronics
+	- Sun
+	- Mellanox
+
+1.5 Third Party Packages
+------------------------
+The following third party packages have been tested with OFED 1.5:
+- Intel MPI, Version 3.2.2
+- Intel MPI, Version 4.0 beta 
+
+1.6 OFED Sources
+----------------
+All sources are located under git://git.openfabrics.org/
+Kernel sources: git://git.openfabrics.org/ofed_1_5/linux-2.6.git ofed_kernel
+User level Sources are downloaded from http://www.openfabrics.org/downloads/
+as written in the BUILD_ID
+
+The kernel sources are based on Linux 2.6.30 mainline kernel. Its patches
+are included in the OFED sources directory.
+For details see HOWTO.build_ofed.
+
+===============================================================================
+2. Main Changes from OFED 1.4.2
+===============================================================================
+Note: For details regarding the various changes,  please see the release notes
+for each package in the docs directory.
+
+    2.1 General changes
+	o Kernel code based on 2.6.30
+	o libraries location - all userspace libraries can be downloaded from
+	  http://www.openfabrics.org/downloads/
+	  See BUILD_ID for exact location
+	o Qlogic replaced low level driver from ipath to qib.
+
+    2.2 SDP
+	o Performance improvements
+	o Zero copy in beta level
+
+    2.3 uDAPL
+	o New UCM provider (ofa-v2-mlx4_0-1u)  with IB UD based CM per process. More
+	  scalable then rdma_cm (cma) or socket cm (scm). 
+	o Common code base with WinOF 2.1. 
+	o Bug fixes.
+
+
+    2.4 perftest
+	o Renamed tests:
+	  ib_rdma_bw  -> rdma_bw
+	  ib_rdma_lat -> rdma_lat
+
+    2.5 Management 
+	o OpenSM
+	  - Mesh Analysis for LASH routing algorithm.
+	  - Reloadable OpenSM configuration (preliminary implemented)
+	  - Routing paths sorted balancing (for UpDown and MinHops)
+	  - Weighted Lid Matrices calculation (for UpDown, MinHop and DOR).
+	  - I/O nodes connectivity (for FatTree).
+
+	o Diagnostic tools:
+
+    2.6 MPI:
+	a. OSU MVAPICH 1.2.0
+	b. Open MPI 1.4
+	c. OSU MVAPICH2 1.4
+	d. MPI tests 3.2
+
+    2.7 iSER:
+	o Available only on kernel.org 2.6.30, 2.6.31 and 2.6.32
+
+    2.8 NFS-RDMA
+	o Added support for RHEL5.4, SLES10 SP3, kernel.org 2.6.25 and 2.6.30.
+	  kernels 2.6.26 and 2.6.27 are not supported
+	o NFS-RDMA is in beta level. Will be GA in OFED-1.5.1
+
+===============================================================================
+3. Known Issues
+===============================================================================
+The following is a list of general limitations and known issues of the various
+components of the OFED 1.5 release.
+
+1. When upgrading from an earlier OFED version, the installation script does not
+   stop the earlier OFED version prior to uninstalling it. 
+   Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
+   upgrading to OFED 1.5.
+2. Memory registration by the user is limited according to administrator
+   setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
+   system configuration.
+3. Fork support from kernel 2.6.12 and above is available provided
+   that applications do not use threads. The fork() is supported as long
+   as the parent process does not run before the child exits or calls exec().
+   The former can be achieved by calling wait(childpid), and the latter can be
+   achieved by application specific means.  The Posix system() call is
+   supported.
+4. The qib driver is supported only on 64-bit platforms.
+5. When installing OFED on OpenSuse or Ubuntu one should use the 
+   --without-depcheck option of the install.pl script
+6. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
+   is that these utilities support devices of type Ethernet only.
+7.  "openibd stop" can sometime fail with the error: 
+        Unloading ib_cm                                            [FAILED]
+        ERROR: Module ib_cm is in use by ib_ipoib 
+    Workaround: run "openibd stop" again.
+8.  When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
+    if IPoIB is set to connected mode). This is because there is a bug in older
+    kernels which causes a kernel panic.
+9. On SLES11 in case that uninstall is failing, need to look at the error log 
+    and remove the RPMs manually using 'rpm -e <rpms list>'
+10. On SLES11 one should set allow_unsupported_modules parameter to 1 in file:
+    /etc/modprobe.d/unsupported-modules. Without this the modules will not
+    load.
+11. iSER is supported on kernel.org: 2.6.30, 2.6.31 and 2.6.32 only
+    OFED-1.5 will not install iSER on other kernels and original iSER
+    module coming with Linux Distribution will stop working because of
+    mismatch in symbols version.
+
+Note: See the release notes of each component for additional issues.

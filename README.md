@@ -22,4 +22,4 @@ Remember, this is just an **work-around** that worked for our environment. It
 may need more effort to success on your system.
 
 # Author
-SeongJAe Park(sj38.park@gmail.com)
+SeongJae Park(sj38.park@gmail.com)
